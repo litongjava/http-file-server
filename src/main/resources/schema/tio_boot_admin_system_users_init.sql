@@ -1,0 +1,5 @@
+INSERT INTO tio_boot_admin_system_users (
+  id, username, password, nickname, signature, title, group_name, tags, notify_count, unread_count, country, access, geographic, address, remark, dept_id, post_ids, email, phone, sex, avatar, status, login_ip, login_date, creator, create_time, updater, update_time, deleted, tenant_id
+) VALUES (
+  1, 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'admin', 'This is a signature', 'Admin', 'Administrators', '{"tags": [{"key": "tag1", "label": "Tag 1"}, {"key": "tag2", "label": "Tag 2"}]}', 10, 5, 'United States', 'admin', '{"province": {"label": "California", "key": "CA"}, "city": {"label": "San Francisco", "key": "SF"}}', '123 Main St, San Francisco, CA 94122', '管理员', 103, '[1]', 'aoteman@126.com', '15612345678', 1, 'http://127.0.0.1:48080/admin-api/infra/file/4/get/your_avatar.png', 0, '127.0.0.1', '2023-11-30 09:16:00', 'admin', '2021-01-05 17:03:47', NULL, '2024-03-23 08:49:55', 0, 1
+);
