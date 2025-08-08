@@ -157,3 +157,4 @@ vcpkg_installed/
 app.zip
 secrets.txt
 http-file-server.db
+data/
