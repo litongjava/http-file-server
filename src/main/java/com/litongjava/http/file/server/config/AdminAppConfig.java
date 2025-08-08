@@ -1,5 +1,6 @@
 package com.litongjava.http.file.server.config;
 
+import com.litongjava.http.file.server.handler.FileChunkedUploadHandler;
 import com.litongjava.http.file.server.handler.FileHandler;
 import com.litongjava.http.file.server.handler.RepoHandler;
 import com.litongjava.tio.boot.admin.config.TioAdminDbConfiguration;
@@ -29,9 +30,15 @@ public class AdminAppConfig {
       r.add("/file/list", fileHandler::list);
       r.add("/file/upload", fileHandler::upload);
       r.add("/file/download", fileHandler::download);
-      
+
       RepoHandler repoHandler = new RepoHandler();
       r.add("/repo/list", repoHandler::list);
+
+      FileChunkedUploadHandler chunkedFileHandler = new FileChunkedUploadHandler();
+      // 分片上传相关路由
+      r.add("/file/upload/init", chunkedFileHandler::initUpload);
+      r.add("/file/upload/chunk", chunkedFileHandler::uploadChunk);
+      r.add("/file/upload/complete", chunkedFileHandler::completeUpload);
     }
 //    new TioAdminControllerConfiguration().config();
   }
