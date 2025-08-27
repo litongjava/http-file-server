@@ -3,6 +3,7 @@ package com.litongjava.http.file.server.config;
 import com.litongjava.http.file.server.handler.FileChunkedUploadHandler;
 import com.litongjava.http.file.server.handler.FileHandler;
 import com.litongjava.http.file.server.handler.RepoHandler;
+import com.litongjava.http.file.server.handler.WhoHandler;
 import com.litongjava.tio.boot.admin.config.TioAdminDbConfiguration;
 import com.litongjava.tio.boot.admin.config.TioAdminHandlerConfiguration;
 import com.litongjava.tio.boot.admin.config.TioAdminInterceptorConfiguration;
@@ -14,11 +15,12 @@ import com.litongjava.tio.http.server.router.HttpRequestRouter;
 public class AdminAppConfig {
 
   public void config() {
+    String[] permitUrls = { "/who" };
     // 配置数据库相关
     new TioAdminDbConfiguration().config();
     new TioAdminRedisDbConfiguration().config();
     new TioAdminMongoDbConfiguration().config();
-    new TioAdminInterceptorConfiguration().config();
+    new TioAdminInterceptorConfiguration(permitUrls).config();
     new TioAdminHandlerConfiguration().config();
     DbTables.init();
 
@@ -39,6 +41,9 @@ public class AdminAppConfig {
       r.add("/file/upload/init", chunkedFileHandler::initUpload);
       r.add("/file/upload/chunk", chunkedFileHandler::uploadChunk);
       r.add("/file/upload/complete", chunkedFileHandler::completeUpload);
+
+      WhoHandler whoHandler = new WhoHandler();
+      r.add("/who", whoHandler::who);
     }
 //    new TioAdminControllerConfiguration().config();
   }
