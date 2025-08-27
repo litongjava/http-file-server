@@ -18,8 +18,10 @@ import com.litongjava.tio.http.common.HttpRequest;
 import com.litongjava.tio.http.common.HttpResponse;
 import com.litongjava.tio.http.common.UploadFile;
 import com.litongjava.tio.http.server.util.CORSUtils;
+import com.litongjava.tio.utils.base64.Base64Utils;
 import com.litongjava.tio.utils.http.ContentTypeUtils;
 import com.litongjava.tio.utils.hutool.FilenameUtils;
+import com.litongjava.tio.utils.hutool.StrUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -62,6 +64,10 @@ public class FileHandler {
     Long original_mod_time = request.getLong("original_mod_time");
 
     String name = uploadFile.getName();
+    if (StrUtil.isNotBlank(name)) {
+      String encodedPath = request.getParam("original_path_encoded");
+      name = Base64Utils.decodeToString(encodedPath);
+    }
     // windows
     name = name.replace("\\\\", "/");
     File file = new File(repoDirPath + File.separator + name);
