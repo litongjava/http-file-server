@@ -18,10 +18,8 @@ import com.litongjava.tio.http.common.HttpRequest;
 import com.litongjava.tio.http.common.HttpResponse;
 import com.litongjava.tio.http.common.UploadFile;
 import com.litongjava.tio.http.server.util.CORSUtils;
-import com.litongjava.tio.utils.base64.Base64Utils;
 import com.litongjava.tio.utils.http.ContentTypeUtils;
 import com.litongjava.tio.utils.hutool.FilenameUtils;
-import com.litongjava.tio.utils.hutool.StrUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,6 +52,9 @@ public class FileHandler {
     String repo = request.getParam("repo");
     String userIdString = request.getUserIdString();
     String username = Aop.get(AppUserService.class).getUsernameById(userIdString);
+    if (username == null) {
+      return response.error("username is not found");
+    }
 
     String repoDirPath = FileConst.DATA_DIR + File.separator + username + File.separator + repo;
     File repoDir = new File(repoDirPath);
@@ -62,17 +63,11 @@ public class FileHandler {
     }
     UploadFile uploadFile = request.getUploadFile("file");
     Long original_mod_time = request.getLong("original_mod_time");
+    String rel_path = request.getParam("rel_path");
 
-    String name = uploadFile.getName();
-    if (StrUtil.isBlank(name)) {
-      String encodedPath = request.getParam("original_path_encoded");
-      if (encodedPath != null) {
-        name = Base64Utils.decodeToString(encodedPath);
-      }
-    }
     // windows
-    name = name.replace("\\\\", "/");
-    File file = new File(repoDirPath + File.separator + name);
+    rel_path = rel_path.replace("\\\\", "/");
+    File file = new File(repoDirPath + File.separator + rel_path);
     File parentFile = file.getParentFile();
     if (!parentFile.exists()) {
       parentFile.mkdirs();
