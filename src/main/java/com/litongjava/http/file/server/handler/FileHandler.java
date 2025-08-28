@@ -64,9 +64,11 @@ public class FileHandler {
     Long original_mod_time = request.getLong("original_mod_time");
 
     String name = uploadFile.getName();
-    if (StrUtil.isNotBlank(name)) {
+    if (StrUtil.isBlank(name)) {
       String encodedPath = request.getParam("original_path_encoded");
-      name = Base64Utils.decodeToString(encodedPath);
+      if (encodedPath != null) {
+        name = Base64Utils.decodeToString(encodedPath);
+      }
     }
     // windows
     name = name.replace("\\\\", "/");
